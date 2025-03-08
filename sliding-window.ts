@@ -110,7 +110,7 @@ function minWindow(s: string, t: string) {
       }
     }
   }
-  return result;
+  return result.length ? result : "No valid substring";
 }
 // Test Cases
 console.log(minWindow("ADOBECODEBANC", "ABC")); // Normal Case

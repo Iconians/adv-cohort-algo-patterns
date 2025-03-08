@@ -1,6 +1,6 @@
 // 1. Generate Parentheses (Medium)
 // Given an integer n, generate all combinations of well-formed parentheses with n pairs.
-function generateParenthesis(n) {
+function generateParenthesis(n: number) {
   // Implement backtracking logic
 }
 // Test Cases
@@ -9,7 +9,7 @@ console.log(generateParenthesis(0)); // Edge Case: No parentheses needed
 
 // 2. Permutations (Medium)
 // Given an array of distinct integers, return all possible permutations.
-function permute(nums) {
+function permute(nums: number[]) {
   // Implement backtracking logic
 }
 // Test Cases
@@ -18,7 +18,7 @@ console.log(permute([])); // Edge Case: Empty array
 
 // 3. Combination Sum (Medium)
 // Given an array of integers and a target, return all unique combinations where numbers sum to target.
-function combinationSum(candidates, target) {
+function combinationSum(candidates: number[], target: number) {
   // Implement backtracking logic
 }
 // Test Cases
@@ -27,7 +27,7 @@ console.log(combinationSum([2, 4], 7)); // Edge Case: No valid combinations
 
 // 4. Word Search (Medium)
 // Given an m x n grid of letters and a word, check if the word exists in the grid using adjacent letters.
-function exist(board, word) {
+function exist(board: string[][], word: string) {
   // Implement backtracking logic
 }
 // Test Cases
