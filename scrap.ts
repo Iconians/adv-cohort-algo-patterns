@@ -144,5 +144,294 @@ function startStation(gas: number[], cost: number[]) {
   return totalGas < 0 ? -1 : startIdx;
 }
 
-console.log(startStation([1, 2, 3, 4, 5], [3, 4, 5, 1, 2]));
-console.log(startStation([2, 3, 4], [3, 4, 3]));
+// console.log(startStation([1, 2, 3, 4, 5], [3, 4, 5, 1, 2]));
+// console.log(startStation([2, 3, 4], [3, 4, 3]));
+
+function subsetRecur(
+  i: number,
+  arr: number[],
+  res: unknown[][],
+  subset: unknown[]
+) {
+  // add subset at end of array
+  if (i === arr.length) {
+    res.push([...subset]);
+    return;
+  }
+
+  // include the current value and
+  // recursively find all subsets
+  subset.push(arr[i]);
+  subsetRecur(i + 1, arr, res, subset);
+
+  // exclude the current value and
+  // recursively find all subsets
+  subset.pop();
+  subsetRecur(i + 1, arr, res, subset);
+}
+
+function subsets(arr: number[]) {
+  const subset: unknown[] = [];
+  const res: unknown[][] = [];
+  subsetRecur(0, arr, res, subset);
+  return res;
+}
+
+// const arr = [1, 2, 3];
+// const res = subsets(arr);
+// console.log(res);
+
+// for (const subset of res) {
+//   console.log(subset.join(" "));
+// }
+
+function genParenthesisUtilScrap(
+  num: number,
+  open: number,
+  close: number,
+  str: string,
+  answer: string[]
+) {
+  if (open === num && close === num) {
+    answer.push(str);
+  }
+
+  if (open < num) {
+    genParenthesisUtilScrap(num, open + 1, close, str + "(", answer);
+  }
+
+  if (close < open) {
+    genParenthesisUtilScrap(num, open, close + 1, str + ")", answer);
+  }
+}
+
+function findAllParenthesisCombos(num: number) {
+  let answer: string[] = [];
+  if (num > 0) {
+    genParenthesisUtilScrap(num, 0, 0, "", answer);
+  }
+  return answer;
+}
+
+// console.log(findAllParenthesisCombos(3)); // Normal Case
+// console.log(findAllParenthesisCombos(0));
+
+// function recurPermute(index: number, str: string[], ans: Set<unknown>) {
+//   // Base Case
+//   if (index === str.length) {
+//     ans.add(str.join(""));
+//     return;
+//   }
+
+//   // Swap the current index with all
+//   // possible indices and recur
+//   for (let i = index; i < str.length; i++) {
+//     [str[index], str[i]] = [str[i], str[index]];
+//     recurPermute(index + 1, str, ans);
+//     [str[index], str[i]] = [str[i], str[index]];
+//   }
+// }
+
+// // Function to find all unique permutations
+// function findPermutationScrap(s: string) {
+//   // sort input string
+//   const str = s.split("").sort();
+
+//   // Stores all unique permutations
+//   let res = new Set();
+//   recurPermute(0, str, res);
+
+//   // Convert Set to Array for the final answer
+//   return Array.from(res).sort();
+// }
+
+function recurPermutationsScrap(
+  index: number,
+  numArr: number[],
+  answer: Set<unknown>
+) {
+  if (index === numArr.length) {
+    answer.add(numArr.join(""));
+    return;
+  }
+
+  for (let i = index; i < numArr.length; i++) {
+    [numArr[index], numArr[i]] = [numArr[i], numArr[index]];
+    recurPermutationsScrap(index + 1, numArr, answer);
+    [numArr[index], numArr[i]] = [numArr[i], numArr[index]];
+  }
+}
+
+function findPermutationScrap(numArr: number[]) {
+  const sortNum = numArr.sort();
+  let res = new Set();
+  recurPermutationsScrap(0, sortNum, res);
+  return Array.from(res).sort();
+}
+
+const n = [1, 2, 3];
+const s = "ABC";
+// const res = findPermutationScrap(n);
+// console.log(res.join(" "));
+// makeCombination(arr, target, cur, res, 0);
+
+function findCombinationsScrap(
+  arr: number[],
+  remSum: number,
+  curr: number[],
+  res: number[][],
+  index: number
+) {
+  if (remSum === 0) {
+    res.push([...curr]);
+    return;
+  }
+
+  if (remSum < 0 || index >= arr.length) return;
+  curr.push(arr[index]);
+  findCombinationsScrap(arr, remSum - arr[index], curr, res, index);
+  curr.pop();
+  findCombinationsScrap(arr, remSum, curr, res, index + 1);
+}
+
+function combinationSumScrap(arr: number[], target: number) {
+  arr.sort((a, b) => a - b);
+  const combinations: number[] = [];
+  const res: number[][] = [];
+  findCombinationsScrap(arr, target, combinations, res, 0);
+  return res;
+}
+
+// Driver Code
+const arr = [2, 4, 6, 8];
+const target = 8;
+const res = combinationSumScrap(arr, target);
+// console.log(combinationSumScrap([2, 3, 6, 7], 7));
+// console.log(res);
+
+// function findMatch(
+//   mat: string[][],
+//   word: string,
+//   x: number,
+//   y: number,
+//   wIdx: number
+// ): boolean {
+//   const wordLength = word.length;
+//   const n = mat.length;
+//   const m = mat[0].length;
+
+//   // Pattern matched
+//   if (wIdx === wordLength) return true;
+
+//   // Out of Boundary
+//   if (x < 0 || y < 0 || x >= n || y >= m) return false;
+
+//   // If grid matches with a letter while
+//   // recursion
+//   if (mat[x][y] === word[wIdx]) {
+//     // Marking this cell as visited
+//     const temp = mat[x][y];
+//     mat[x][y] = "#";
+
+//     // finding subpattern in 4 directions
+//     const res =
+//       findMatch(mat, word, x - 1, y, wIdx + 1) ||
+//       findMatch(mat, word, x + 1, y, wIdx + 1) ||
+//       findMatch(mat, word, x, y - 1, wIdx + 1) ||
+//       findMatch(mat, word, x, y + 1, wIdx + 1);
+
+//     // marking this cell as unvisited again
+//     mat[x][y] = temp;
+//     return res;
+//   }
+
+//   // Not matching then return false
+//   return false;
+// }
+
+// // Function to check if the word exists in the matrix or not
+// function isWordExist(mat: string[][], word: string) {
+//   const wordLength = word.length;
+//   const n = mat.length;
+//   const m = mat[0].length;
+
+//   // if total characters in matrix is
+//   // less than word length
+//   if (wordLength > n * m) return false;
+
+//   // Traverse in the grid
+//   for (let i = 0; i < n; i++) {
+//     for (let j = 0; j < m; j++) {
+//       // If first letter matches, then recur and check
+//       if (mat[i][j] === word[0]) {
+//         if (findMatch(mat, word, i, j, 0)) return true;
+//       }
+//     }
+//   }
+//   return false;
+// }
+
+// const mat = [
+//   ["a", "x", "m", "y"],
+//   ["b", "g", "d", "f"],
+//   ["x", "e", "e", "t"],
+//   ["r", "a", "k", "s"],
+// ];
+// const word = "geeks";
+// console.log(isWordExist(mat, word));
+// console.log(isWordExist([["A"]], "B"));
+
+function findMatch(
+  mat: string[][],
+  word: string,
+  x: number,
+  y: number,
+  wIdx: number
+): boolean {
+  const wordLength = word.length;
+  const n = mat.length;
+  const m = mat[0].length;
+
+  if (wIdx === wordLength) return true;
+  if (x < 0 || y < 0 || x >= n || y >= m) return false;
+
+  if (mat[x][y] === word[wIdx]) {
+    const temp = mat[x][y];
+    mat[x][y] = "#";
+    const res =
+      findMatch(mat, word, x - 1, y, wIdx + 1) ||
+      findMatch(mat, word, x + 1, y, wIdx + 1) ||
+      findMatch(mat, word, x, y - 1, wIdx + 1) ||
+      findMatch(mat, word, x, y + 1, wIdx + 1);
+
+    mat[x][y] = temp;
+    return res;
+  }
+  return false;
+}
+
+function isWordExist(mat: string[][], word: string) {
+  const wordLength = word.length;
+  const n = mat.length;
+  const m = mat[0].length;
+  if (wordLength > n * m) return false;
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      if (mat[i][j] === word[0]) {
+        if (findMatch(mat, word, i, j, 0)) return true;
+      }
+    }
+  }
+  return false;
+}
+
+const mat = [
+  ["a", "x", "m", "y"],
+  ["b", "g", "d", "f"],
+  ["x", "e", "e", "t"],
+  ["r", "a", "k", "s"],
+];
+const word = "geeks";
+console.log(isWordExist(mat, word));
+console.log(isWordExist([["A"]], "B"));
